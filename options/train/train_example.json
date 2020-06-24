@@ -1,0 +1,92 @@
+{
+  "name": "lightcnn_IP-FSRGAN_nopatch_recloss10" //  please remove "debug_" during training
+  , "use_tb_logger": true
+  , "model":"srragan"
+  ,"scale": 4
+  , "gpu_ids": [8, 9]
+  ,"datasets": {
+    "train": {
+      "name": "DATASETNAME"
+      , "mode": "LRHR"
+//      , "dataroot_HR": ""
+//      , "dataroot_LR": ""
+      , "subset_file": null
+      , "image_lists": ["train.list"]
+      , "use_shuffle": true
+      , "resize" : 1
+      , "n_workers": 8
+      , "batch_size": 16
+      , "HR_size": 128
+      , "use_flip": false
+      , "use_rot": false
+      , "crop": false
+      , "downsample": "numpy"
+    }
+//    , "val": {  ////      "name": "val_set14_part"
+  ////      , "mode": "LRHR"
+  ////      , "dataroot_HR": ""
+  ////      , "dataroot_LR": ""
+  ////    }
+  }
+  , "path": {
+    "root": "ProjectROOT"
+//     , "resume_state": ""
+//    , "pretrain_model_G": ""
+  }
+
+  , "network_G": {
+    "which_model_G": "RRDB_net" // RRDB_net | sr_resnet
+    , "norm_type": null
+    , "mode": "CNA"
+    , "nf": 64
+    , "nb": 23
+    , "in_nc": 3
+    , "out_nc": 3
+    , "gc": 32
+    , "group": 1
+  }
+  , "network_D": {
+    "which_model_D": "discriminator_vgg_128"
+    , "norm_type": "batch"
+    , "act_type": "leakyrelu"
+    , "mode": "CNA"
+    , "nf": 64
+    , "in_nc": 3
+  }
+
+  , "train": {
+    "lr_G": 1e-4
+    , "weight_decay_G": 0
+    , "beta1_G": 0.9
+    , "lr_D": 1e-4
+    , "weight_decay_D": 0
+    , "beta1_D": 0.9
+    , "lr_scheme": "MultiStepLR"
+    , "lr_steps": [50000, 100000, 200000, 500000]
+    , "lr_gamma": 0.5
+
+    , "pixel_criterion": "l1"
+    , "pixel_weight": 1e-2
+    , "feature_criterion": "l1"
+    , "feature_weight": 1
+    , "gan_type": "vanilla"
+    , "gan_weight": 5e-3
+    , "recloss": {
+      "name":"lightcnn",
+      "path": "recognition/pre-trained/LightCNN_29Layers_V2_checkpoint.pth",
+      "weight": 10
+    }
+    //for wgan-gp
+    // , "D_update_ratio": 1
+    // , "D_init_iters": 0
+    // , "gp_weigth": 10
+    , "manual_seed": 0
+    , "niter": 2e6
+    , "val_freq": 1000
+  }
+
+  , "logger": {
+    "print_freq": 200
+    , "save_checkpoint_freq": 1e5
+  }
+}

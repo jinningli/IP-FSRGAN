@@ -1,0 +1,35 @@
+{
+  "name": "lightcnn_IP-FSRGAN_nopatch_recloss10"
+  , "suffix": "_IP-FSRGAN"
+  , "model": "srragan"
+  , "scale": 4
+  , "gpu_ids": [0,1,2,3,4]
+
+  , "datasets": {
+    "test 1": {
+    "name": "TestSetName",
+    "resize": 1,
+    "mode": "LRHR",
+     "downsample": "numpy",
+      "dataroot_HR": "TestSetPath"
+  }
+  }
+  , "path": {
+    "root": "ProjectROOT"
+    , "pretrain_model_G": "PathToTheModel"
+//    , "pretrain_model_G": ""
+  }
+
+  , "network_G": {
+    "which_model_G": "RRDB_net" // RRDB_net | sr_resnet
+    , "norm_type": null
+    , "mode": "CNA"
+    , "nf": 64
+    , "nb": 23
+    , "in_nc": 3
+    , "out_nc": 3
+
+    , "gc": 32
+    , "group": 1
+  }
+}
