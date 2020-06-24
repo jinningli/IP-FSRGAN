@@ -1,4 +1,4 @@
-# FACESR
+# IP-FSRGAN
 ## Requirements
 - python3
 - torch 1.0.1
